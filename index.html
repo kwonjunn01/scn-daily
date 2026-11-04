@@ -1,0 +1,98 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>SCN 발행물</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"><style>/* SCN design tokens — single source for colours, type, spacing and chart sizes.
+ * Human doc: scenario/DESIGN.md. Go mirror: tokens.go (TestTokensMatchCSS keeps them in lockstep).
+ * Golden screen: .council/design/mockups/edition-v3.html (owner pick, 2026-11-02).
+ * Builders: embed this file (design.CSS) into every owner-facing HTML page instead of typing raw values.
+ * D1 (scenario/scripts/design-check.js d1) fails on any hex in edition CSS that is not declared here.
+ */
+:root{
+  /* ── Palette: 6 core roles ─────────────────────────────────────────── */
+  --paper:#FFFFFF;   /* background: the white research-note sheet (v3) */
+  --ink:#0F1720;     /* text, figure ink, 1px rules that matter; 18.1:1 on paper */
+  --sub:#4A5563;     /* secondary text, captions, sources; 7.6:1 on paper */
+  --head:#0B2545;    /* ink-navy: masthead, tier chip, fan median, sequential ramp end; 15.4:1 */
+  --up:#D2232A;      /* 상승·매수·강화 (Korean convention: red); 5.2:1 on paper */
+  --down:#1450A3;    /* 하락·매도·약화 (Korean convention: blue); also focus ring; 7.8:1 */
+
+  /* ── Support (derived, not extra colours) ──────────────────────────── */
+  --sheet:#F5F6F8;   /* surface band: ticker, figure note, kill-table head */
+  --rule:#D5DAE1;    /* decorative hairline only (1.4:1) — never the only boundary of data */
+  --edge:#7C8796;    /* required graphic boundary: axes, tile borders, band edges, meter track; 3.6:1 */
+  --hold:#6B7280;    /* 보류·중립·기준 시나리오; 4.8:1 */
+  --hl:#EEF3FA;      /* selected node / tip background */
+
+  /* Sequential (one hue, light → ink-navy): tile map, heatmap size-free fills, fan bands.
+     Text on seq-1..3 uses --ink, on seq-4..5 uses --paper. */
+  --seq-1:#EEF3FA; --seq-2:#B5C0CD; --seq-3:#7C8CA0; --seq-4:#445872; --seq-5:#0B2545;
+  /* Diverging direction tints (heatmap colour = 3-model consensus direction). Text stays --ink on 1–2. */
+  --up-1:#FAE5E5; --up-2:#EDA7AA;     /* --up is step 3 */
+  --down-1:#E8EEF6; --down-2:#A1B9DA; /* --down is step 3 */
+
+  /* Fan / cone (BoE fan chart, NHC cone): darker = more likely */
+  --fan-inner:var(--seq-2);  /* central band (≈50%) */
+  --fan-outer:var(--seq-1);  /* outer band (≈90%), outlined with --edge */
+  --fan-median:var(--head);
+
+  /* ── Type: IBM Plex Sans KR (text + titles) + IBM Plex Mono (figures, dates, codes) ── */
+  --font-text:"IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  --font-num:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  /* size / line-height / weight / tracking — four sizes per screen: 24, 20, 16, 13 */
+  --t-title-size:24px;   --t-title-lh:32px;  --t-title-w:700; --t-title-ls:-0.025em; /* pane headline h1 (390) */
+  --t-title-size-lg:28px;--t-title-lh-lg:36px;                                        /* h1 at >=720px */
+  --t-fig-size:20px;     --t-fig-lh:28px;    --t-fig-w:500;   --t-fig-ls:0;           /* mono key figures: tier %, node value, threshold */
+  --t-head-size:16px;    --t-head-lh:24px;   --t-head-w:600;  --t-head-ls:-0.01em;    /* figure claim title, row name, tab label */
+  --t-body-size:16px;    --t-body-lh:28px;   --t-body-w:400;  --t-body-ls:-0.01em;    /* prose (1.75) */
+  --t-label-lh:24px;                                                                   /* 16px UI labels and rows (1.5) */
+  --t-meta-size:13px;    --t-meta-lh:20px;   --t-meta-w:400;  --t-meta-ls:0;          /* captions, sources, tab sub, chart labels, ticker */
+
+  /* ── Spacing: 8-point grid. 4 = half step (icon↔label, chip inset). 12 = dense rows only. ── */
+  --sp-4:4px; --sp-8:8px; --sp-12:12px; --sp-16:16px; --sp-24:24px; --sp-32:32px;
+  --sp-40:40px; --sp-48:48px; --sp-64:64px; --sp-80:80px;
+
+  /* Radii: the sheet is square. 4 only for the tier chip. */
+  --r-0:0; --r-4:4px;
+
+  /* ── Layout (measured from edition-v3 at 390×844, snapped to the grid) ── */
+  --wrap:800px;        /* single column, desktop */
+  --gutter:16px;       /* 390 side inset; 24px at >=720px */
+  --mast-h:48px;       /* one line at 390 (v3 wraps to 70 — fixed here) */
+  --tick-h:32px;       /* index strip */
+  --tabs-h:56px;       /* 국장 · 미장 · 부동산: label 24 + sub 20 + 8 + 4 */
+  --row-h:56px;        /* pick / area row */
+  --touch:48px;        /* minimum touch target */
+
+  /* ── Charts ── */
+  --fig-max:560px;     /* SVG viewBox width 400; label text 14 units → >=12px rendered at 390 */
+  --spark-w:64px; --spark-h:24px;        /* pick rows */
+  --spark-tick-w:48px; --spark-tick-h:16px; /* ticker items */
+  --tile:40px; --tile-gap:4px;           /* Seoul/수도권 tile map at 390: 8 × 40 + 7 × 4 = 348 */
+  --meter-h:4px;       /* 이러면 틀림 .killmeter track height (gemini 3rd round; DOM element, not CSS only) */
+  --ledger-cell:16px;  /* gap between the 4 label-over-value cells of a docket/ledger row (Richgo 05 structure) */
+  --stroke-hair:1px; --stroke-data:2px; --stroke-line:3px; /* stroke widths are not spacing */
+
+  --motion-draw:480ms; --motion-meter:240ms;
+  color-scheme:light;
+}
+
+/* Dark: v3's dark set, kept because the commute read often happens with the phone in dark mode. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1116; --sheet:#151A21; --ink:#E6EAF0; --sub:#9AA4B2; --rule:#2A313B; --edge:#5C6675;
+    --head:#C9D6EA; --up:#FF5A5F; --down:#4C8DFF; --hold:#9AA4B2; --hl:#18212D;
+    --seq-1:#18212D; --seq-2:#2B3A50; --seq-3:#475C7A; --seq-4:#7D93B3; --seq-5:#C9D6EA;
+    --up-1:#3A1A1C; --up-2:#7A2F33; --down-1:#16243A; --down-2:#2C4F86;
+    color-scheme:dark;
+  }
+}
+
+@media (min-width:720px){
+  :root{ --gutter:24px; --t-title-size:var(--t-title-size-lg); --t-title-lh:var(--t-title-lh-lg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  :root{ --motion-draw:0ms; --motion-meter:0ms; }
+  /* No transitions at all: a 0.01ms 'transition: all' still animates every style change, so
+     getComputedStyle reads the old value for a frame (D3 probes saw stale padding). */
+  *,*::before,*::after{ animation-duration:0s!important; animation-iteration-count:1!important; transition:none!important; scroll-behavior:auto!important; }
+}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-text);word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em}main{max-width:var(--wrap);margin:auto;padding:var(--sp-24) var(--gutter)}header{border-bottom:var(--stroke-data) solid var(--head);padding-bottom:var(--sp-16)}h1{font-size:var(--t-title-size);line-height:var(--t-title-lh);letter-spacing:-.02em;color:var(--head)}p{font-size:var(--t-meta-size);line-height:var(--t-meta-lh);color:var(--sub)}ul{list-style:none;padding:0}li{border-bottom:var(--stroke-hair) solid var(--rule)}a{display:block;min-height:var(--touch);padding:var(--sp-8) 0;color:var(--head);font-size:var(--t-body-size);line-height:var(--t-body-lh)}a:focus-visible{outline:var(--stroke-data) solid var(--head)}</style></head><body><main><header><h1>SCN 발행물</h1><p>최신 호부터 읽기 · 국장, 미장, 부동산</p></header><ul><li><a href="daily-2026-11-04/edition.html"><span>2026.11.04 일간</span><br><strong>외국인 코스피200 선물 수급이 매수에서 매도로 바뀌어 지수 상방을 제약한다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li></ul><p>정보 제공 목적이며 투자 권유가 아닙니다. 확률은 미보정입니다.</p></main></body></html>
