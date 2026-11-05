@@ -37,7 +37,11 @@
   --font-text:"IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
   --font-num:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 
-  /* size / line-height / weight / tracking — four sizes per screen: 24, 20, 16, 13 */
+  /* size / line-height / weight / tracking — four sizes per screen: 24, 20, 16, 13 (28 = h1 at >=720).
+     v3.4 (D1 typescale): HTML text may use only 13/16/20/24/28px, at most 4 per 꼭지 screen, and weight 700
+     only on the >=24px title — set th, strong, b to font-weight:600 (browser default is 700).
+     Tables: <caption> in --t-meta-size/--t-meta-lh at weight 600, caption-side:top, margin-bottom --sp-8 (D1 tablename).
+     Record table baseline row (ForecastBench): background --sheet + the word '기준선'; no new colour. */
   --t-title-size:24px;   --t-title-lh:32px;  --t-title-w:700; --t-title-ls:-0.025em; /* pane headline h1 (390) */
   --t-title-size-lg:28px;--t-title-lh-lg:36px;                                        /* h1 at >=720px */
   --t-fig-size:20px;     --t-fig-lh:28px;    --t-fig-w:500;   --t-fig-ls:0;           /* mono key figures: tier %, node value, threshold */
