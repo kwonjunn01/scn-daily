@@ -17,8 +17,9 @@
   --sheet:#F5F6F8;   /* surface band: ticker, figure note, kill-table head */
   --rule:#D5DAE1;    /* decorative hairline only (1.4:1) — never the only boundary of data */
   --edge:#7C8796;    /* required graphic boundary: axes, tile borders, band edges, meter track; 3.6:1 */
-  --hold:#6B7280;    /* 보류·중립·기준 시나리오; 4.8:1 */
+  --hold:#5F6775;    /* 보류·중립·기준 시나리오; 5.7:1 on paper, 5.3:1 on sheet, 5.1:1 on hl (v3.3: #6B7280 failed 4.5:1 on sheet/hl, codex 5th round) */
   --hl:#EEF3FA;      /* selected node / tip background */
+  --wash:var(--sheet); /* v3.3 alias, not a new colour: surface of .insight (편집 판단), .hold-group (관망 묶음), .docket-summary */
 
   /* Sequential (one hue, light → ink-navy): tile map, heatmap size-free fills, fan bands.
      Text on seq-1..3 uses --ink, on seq-4..5 uses --paper. */
@@ -71,7 +72,9 @@
   /* Value-chain evidence ledger (DESIGN.md v3.2, 2026-11-04): 3-cell strip 후방·후보·전방 in SVG units
      (3 × 128 + 2 × 8 = viewBox 400), and the HTML ledger spine (DART = --head, 보강 KIRS·뉴스 = --edge). */
   --vc-col:128px; --vc-gap:8px; --vc-cell-h:64px;
-  --quote-bar:2px;     /* ledger spine / blockquote left rule — a stroke, not spacing */
+  --quote-bar:2px;     /* ledger spine / blockquote left rule / .hold-group left rule — a stroke, not spacing */
+  /* Editor judgment box (DESIGN.md v3.3 Composition > 판단 상자): left rule 4px --head, inset 16, height budget at 390. */
+  --insight-bar:4px; --insight-max-h:320px;
   --stroke-hair:1px; --stroke-data:2px; --stroke-line:3px; /* stroke widths are not spacing */
 
   --motion-draw:480ms; --motion-meter:240ms;
@@ -81,7 +84,8 @@
 /* Dark: v3's dark set, kept because the commute read often happens with the phone in dark mode. */
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0E1116; --sheet:#151A21; --ink:#E6EAF0; --sub:#9AA4B2; --rule:#2A313B; --edge:#5C6675;
+    --paper:#0E1116; --sheet:#151A21; --ink:#E6EAF0; --sub:#9AA4B2; --rule:#2A313B; --edge:#6B7686;
+    /* v3.3: dark --edge #5C6675 → #6B7686 (2.8:1 → 3.5:1 on dark --hl, codex 5th round) */
     --head:#C9D6EA; --up:#FF5A5F; --down:#4C8DFF; --hold:#9AA4B2; --hl:#18212D;
     --seq-1:#18212D; --seq-2:#2B3A50; --seq-3:#475C7A; --seq-4:#7D93B3; --seq-5:#C9D6EA;
     --up-1:#3A1A1C; --up-2:#7A2F33; --down-1:#16243A; --down-2:#2C4F86;
@@ -99,4 +103,4 @@
      getComputedStyle reads the old value for a frame (D3 probes saw stale padding). */
   *,*::before,*::after{ animation-duration:0s!important; animation-iteration-count:1!important; transition:none!important; scroll-behavior:auto!important; }
 }
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-text);word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em}main{max-width:var(--wrap);margin:auto;padding:var(--sp-24) var(--gutter)}header{border-bottom:var(--stroke-data) solid var(--head);padding-bottom:var(--sp-16)}h1{font-size:var(--t-title-size);line-height:var(--t-title-lh);letter-spacing:-.02em;color:var(--head)}p{font-size:var(--t-meta-size);line-height:var(--t-meta-lh);color:var(--sub)}ul{list-style:none;padding:0}li{border-bottom:var(--stroke-hair) solid var(--rule)}a{display:block;min-height:var(--touch);padding:var(--sp-8) 0;color:var(--head);font-size:var(--t-body-size);line-height:var(--t-body-lh)}a:focus-visible{outline:var(--stroke-data) solid var(--head)}</style></head><body><main><header><h1>SCN 발행물</h1><p>최신 호부터 읽기 · 국장, 미장, 부동산</p></header><ul><li><a href="daily-2026-11-05-r2/edition.html"><span>2026.11.05 일간</span><br><strong>외국인 코스피200 선물이 순매도로 돌아서 지수 상단을 누르고 있다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li><li><a href="daily-2026-11-04/edition.html"><span>2026.11.04 일간</span><br><strong>외국인 코스피200 선물 수급이 매수에서 매도로 바뀌어 지수 상방을 제약한다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li></ul><p>정보 제공 목적이며 투자 권유가 아닙니다. 확률은 미보정입니다.</p></main></body></html>
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-text);word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em}main{max-width:var(--wrap);margin:auto;padding:var(--sp-24) var(--gutter)}header{border-bottom:var(--stroke-data) solid var(--head);padding-bottom:var(--sp-16)}h1{font-size:var(--t-title-size);line-height:var(--t-title-lh);letter-spacing:-.02em;color:var(--head)}p{font-size:var(--t-meta-size);line-height:var(--t-meta-lh);color:var(--sub)}ul{list-style:none;padding:0}li{border-bottom:var(--stroke-hair) solid var(--rule)}a{display:block;min-height:var(--touch);padding:var(--sp-8) 0;color:var(--head);font-size:var(--t-body-size);line-height:var(--t-body-lh)}a:focus-visible{outline:var(--stroke-data) solid var(--head)}</style></head><body><main><header><h1>SCN 발행물</h1><p>최신 호부터 읽기 · 국장, 미장, 부동산</p></header><ul><li><a href="daily-2026-11-06/edition.html"><span>2026.11.06 일간</span><br><strong>외국인 선물 순매수가 11월 5일 되돌아왔지만 부호 교차가 커 추세로 보기 어렵다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li><li><a href="daily-2026-11-05-r2/edition.html"><span>2026.11.05 일간</span><br><strong>외국인 코스피200 선물이 순매도로 돌아서 지수 상단을 누르고 있다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li><li><a href="daily-2026-11-04/edition.html"><span>2026.11.04 일간</span><br><strong>외국인 코스피200 선물 수급이 매수에서 매도로 바뀌어 지수 상방을 제약한다.</strong><br><span>국장 주목 · 미장 주목 · 부동산 주목</span></a></li></ul><p>정보 제공 목적이며 투자 권유가 아닙니다. 확률은 미보정입니다.</p></main></body></html>
